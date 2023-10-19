@@ -4,8 +4,8 @@ defineOptions({
 })
 
 const name = ref('')
-
 const router = useRouter()
+
 function go() {
   if (name.value)
     router.push(`/hi/${encodeURIComponent(name.value)}`)
@@ -17,7 +17,7 @@ function go() {
     <div i-carbon-campsite inline-block text-4xl />
     <p>
       <a rel="noreferrer" href="https://github.com/antfu/vitesse-lite" target="_blank">
-        Vitesse Lite
+        Vitesse Lite Testing
       </a>
     </p>
     <p>
