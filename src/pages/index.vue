@@ -59,29 +59,11 @@ onActivated(async () => {
 
 <template>
     <v-app-bar :elevation="2" rounded>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-      <v-toolbar-title>gkk Chatbot</v-toolbar-title>
-
-      <v-spacer></v-spacer>
-
-      <v-btn
-        variant="outlined"
-        class="d-md-none ma-3"
-        @click="toggleDark"
-        >
-        Tarst
-      </v-btn>
-      <v-btn
-        variant="outlined"
-        class="text-none d-none d-md-block"
-        @click="toggleDark"
-      >
-        {{ $t('newConversation') }}
-      </v-btn>
-
+      <v-toolbar-title class="text-green-darken-3 font-weight-bold">gkk Chatbot</v-toolbar-title>
+      <v-btn @click="toggleDark" icon="mdi-brightness-4"></v-btn>
     </v-app-bar>
 
     <v-main>
-      <Welcome v-if="!route.params.id && conversation.messages.length === 0" />
+      <Welcome/>
     </v-main>
 </template>

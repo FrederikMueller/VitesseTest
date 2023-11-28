@@ -18,8 +18,6 @@ const vuetify = createVuetify({
   directives,
 })
 
-const app = createApp(App)
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
@@ -30,6 +28,8 @@ const i18n = createI18n({
   locale: 'en',
   messages
 });
+
+const app = createApp(App)
 
 app.use(router)
 app.use(i18n)
