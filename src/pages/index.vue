@@ -60,17 +60,17 @@ onActivated(async () => {
 <template>
     <v-app-bar :elevation="2" rounded>
       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
       <v-toolbar-title>gkk Chatbot</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
       <v-btn
-        :title="('newConversation')"
-        icon="mdi-plus"
-        @click="createNewConversation"
+        variant="outlined"
         class="d-md-none ma-3"
-      ></v-btn>
+        @click="toggleDark"
+        >
+        Tarst
+      </v-btn>
       <v-btn
         variant="outlined"
         class="text-none d-none d-md-block"

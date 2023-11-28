@@ -18,8 +18,6 @@ const vuetify = createVuetify({
   directives,
 })
 
-
-
 const app = createApp(App)
 
 const router = createRouter({

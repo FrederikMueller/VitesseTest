@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref, onMounted, computed, watchEffect } from 'vue'
+import { defineProps, ref, onMounted} from 'vue'
 
 const endpoint = 'api/v1.0/chatbot'
 const menu = ref(false)
@@ -84,7 +84,7 @@ const loadPrompts = async () => {
   loadingPrompts.value = false
 }
 
-const selectPrompt = (prompt) => {
+const selectPrompt = (prompt:string) => {
   props.usePrompt(prompt.prompt)
   menu.value = false
 }
