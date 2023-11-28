@@ -10,7 +10,6 @@ declare module 'vue' {
     ApiKeyDialog: typeof import('./src/components/ApiKeyDialog.vue')['default']
     Conversation: typeof import('./src/components/Conversation.vue')['default']
     DocumentsManage: typeof import('./src/components/DocumentsManage.vue')['default']
-    Languages: typeof import('./src/components/settings/Languages.vue')['default']
     MessageActions: typeof import('./src/components/MessageActions.vue')['default']
     ModelDialog: typeof import('./src/components/ModelDialog.vue')['default']
     'ModelParameters.client': typeof import('./src/components/ModelParameters.client.vue')['default']
@@ -20,9 +19,6 @@ declare module 'vue' {
     Prompt: typeof import('./src/components/Prompt.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    TheCounter: typeof import('./src/components/old/TheCounter.vue')['default']
-    TheFooter: typeof import('./src/components/old/TheFooter.vue')['default']
-    TheInput: typeof import('./src/components/old/TheInput.vue')['default']
     Welcome: typeof import('./src/components/Welcome.vue')['default']
     WelcomeCard: typeof import('./src/components/WelcomeCard.vue')['default']
   }
