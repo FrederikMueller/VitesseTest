@@ -1,4 +1,7 @@
-<script setup>
+<script setup lang="ts">
+import { defineProps, ref, onMounted, computed, watchEffect } from 'vue'
+
+const endpoint = 'api/v1.0/chatbot'
 const menu = ref(false)
 const prompts = ref([])
 const editingPrompt = ref(null)
@@ -86,9 +89,10 @@ const selectPrompt = (prompt) => {
   menu.value = false
 }
 
-onNuxtReady( () => {
+onMounted(() => {
   loadPrompts()
-})
+});
+
 </script>
 
 <template>

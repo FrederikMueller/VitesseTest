@@ -2,6 +2,7 @@
 import { getDefaultConversationData } from "~/utils/helper";
 
 const route = useRoute();
+const router = useRouter();
 const conversation = ref(getDefaultConversationData());
 
 // const loadConversation = async () => {
@@ -20,6 +21,7 @@ const conversation = ref(getDefaultConversationData());
 // }
 
 const createNewConversation = () => {
+  console.log('createNewConversation')
   if (route.path !== '/') {
     return router.push('/?new')
   }
@@ -47,6 +49,7 @@ const navTitle = computed(() => {
 })
 
 onActivated(async () => {
+  console.log('onActivated')
   if (route.path === '/' && route.query.new !== undefined) {
     createNewConversation()
   }
@@ -55,31 +58,30 @@ onActivated(async () => {
 </script>
 
 <template>
-  <v-app-bar>
-    <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+    <v-app-bar :elevation="2" rounded>
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
 
-    <v-toolbar-title>{{ navTitle }}</v-toolbar-title>
+      <v-toolbar-title>gkk Chatbot</v-toolbar-title>
 
-    <v-spacer></v-spacer>
+      <v-spacer></v-spacer>
 
-    <v-btn
+      <v-btn
         :title="('newConversation')"
-        icon="add"
+        icon="mdi-plus"
         @click="createNewConversation"
         class="d-md-none ma-3"
-    ></v-btn>
-    <v-btn
+      ></v-btn>
+      <v-btn
         variant="outlined"
         class="text-none d-none d-md-block"
-        @click="createNewConversation"
-    >
-      {{ ('newConversation') }}
-    </v-btn>
+        @click="toggleDark"
+      >
+        {{ $t('newConversation') }}
+      </v-btn>
 
-  </v-app-bar>
+    </v-app-bar>
 
-  <v-main>
-    <Welcome v-if="!route.params.id && conversation.messages.length === 0" />
-    <Conversation :conversation="conversation" />
-  </v-main>
+    <v-main>
+      <Welcome v-if="!route.params.id && conversation.messages.length === 0" />
+    </v-main>
 </template>

@@ -6,7 +6,8 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
-import vuetify from "vite-plugin-vuetify";
+import vuetify from "vite-plugin-vuetify"
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
 
 export default defineConfig({
   resolve: {
@@ -15,6 +16,9 @@ export default defineConfig({
     },
   },
   plugins: [
+    VueI18nPlugin({
+      include: [path.resolve(__dirname, './src/locales/**')],
+    }),
     VueMacros({
       defineOptions: false,
       defineModels: false,

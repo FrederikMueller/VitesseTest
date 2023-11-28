@@ -3,9 +3,9 @@
     <v-row>
       <v-col cols="12">
         <div class="text-center">
-          <h2 class="text-h2">{{ $t('welcomeTo') }} <span class="text-primary">{{ runtimeConfig.public.appName }}</span></h2>
+          <h2 class="text-h2">{{ $t('welcomeTo') }} <span class="text-primary">gkk Chatbot</span></h2>
           <p class="text-caption my-5">
-            {{ runtimeConfig.public.appName }} {{ $t('welcomeScreen.introduction1') }}
+            {{ $t('welcomeScreen.introduction1') }}
             <br>
           </p>
         </div>
@@ -28,6 +28,7 @@
             </v-row>
             <WelcomeCard v-for="example in examples" :content="example" />
           </v-col>
+
           <v-col
               cols="12"
               md="4"
@@ -40,8 +41,9 @@
                 </div>
               </v-col>
             </v-row>
-            <WelcomeCard v-for="capabilitie in capabilities" :content="capabilitie" />
+            <WelcomeCard v-for="capability in capabilities" :content="capability" />
           </v-col>
+
           <v-col
               cols="12"
               md="4"
@@ -56,27 +58,32 @@
             </v-row>
             <WelcomeCard v-for="limitation in limitations" :content="limitation" />
           </v-col>
+
         </v-row>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
-<script setup>
-const runtimeConfig = useRuntimeConfig()
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
 const examples = ref([
-  $i18n.t('welcomeScreen.examples.item1'),
-  $i18n.t('welcomeScreen.examples.item2'),
-  $i18n.t('welcomeScreen.examples.item3')
+  t('welcomeScreen.examples.item1'),
+  t('welcomeScreen.examples.item2'),
+  t('welcomeScreen.examples.item3')
 ])
 const capabilities = ref([
-  $i18n.t('welcomeScreen.capabilities.item1'),
-  $i18n.t('welcomeScreen.capabilities.item2'),
-  $i18n.t('welcomeScreen.capabilities.item3')
+  t('welcomeScreen.capabilities.item1'),
+  t('welcomeScreen.capabilities.item2'),
+  t('welcomeScreen.capabilities.item3')
 ])
 const limitations = ref([
-  $i18n.t('welcomeScreen.limitations.item1'),
-  $i18n.t('welcomeScreen.limitations.item2'),
-  $i18n.t('welcomeScreen.limitations.item3')
+  t('welcomeScreen.limitations.item1'),
+  t('welcomeScreen.limitations.item2'),
+  t('welcomeScreen.limitations.item3')
 ])
 </script>
