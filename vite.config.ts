@@ -1,5 +1,3 @@
-/// <reference types="vitest" />
-
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
@@ -8,6 +6,7 @@ import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import UnoCSS from 'unocss/vite'
 import VueMacros from 'unplugin-vue-macros/vite'
+import vuetify from "vite-plugin-vuetify";
 
 export default defineConfig({
   resolve: {
@@ -28,6 +27,7 @@ export default defineConfig({
         }),
       },
     }),
+    vuetify({ autoImport: true }), // Enabled by default
 
     // https://github.com/hannoeru/vite-plugin-pages
     Pages(),
@@ -55,9 +55,4 @@ export default defineConfig({
     // see uno.config.ts for config
     UnoCSS(),
   ],
-
-  // https://github.com/vitest-dev/vitest
-  test: {
-    environment: 'jsdom',
-  },
 })

@@ -4,6 +4,5 @@
       Chat GPT @ gkk
     </p>
     <RouterView />
-    <TheFooter />
   </main>
 </template>

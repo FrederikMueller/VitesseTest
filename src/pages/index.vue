@@ -1,46 +1,85 @@
-<script setup lang="ts" generic="T extends any, O extends any">
-defineOptions({
-  name: 'IndexPage',
+<script setup lang="ts">
+import { getDefaultConversationData } from "~/utils/helper";
+
+const route = useRoute();
+const conversation = ref(getDefaultConversationData());
+
+// const loadConversation = async () => {
+//   const { data, error } = await useAuthFetch('/api/chat/conversations/' + route.params.id)
+//   if (!error.value) {
+//     conversation.value = Object.assign(conversation.value, data.value)
+//   }
+// }
+
+// const loadMessage = async () => {
+//   const { data, error } = await useAuthFetch('/api/chat/messages/?conversationId=' + route.params.id)
+//   if (!error.value) {
+//     conversation.value.messages = data.value
+//     conversation.value.id = route.params.id
+//   }
+// }
+
+const createNewConversation = () => {
+  if (route.path !== '/') {
+    return router.push('/?new')
+  }
+  conversation.value = Object.assign(getDefaultConversationData(), {
+    topic: ('newConversation')
+  })
+}
+
+
+// onMounted(async () => {
+//   if (route.params.id) {
+//     conversation.value.loadingMessages = true
+//     await loadConversation()
+//     await loadMessage()
+//     conversation.value.loadingMessages = false
+//   }
+// })
+
+
+const navTitle = computed(() => {
+  if (conversation.value && conversation.value.topic !== null) {
+    return conversation.value.topic === '' ?('defaultConversationTitle') : conversation.value.topic
+  }
+  return 'Test'
 })
 
-const name = ref('')
-const router = useRouter()
+onActivated(async () => {
+  if (route.path === '/' && route.query.new !== undefined) {
+    createNewConversation()
+  }
+})
 
-function go() {
-  if (name.value)
-    router.push(`/hi/${encodeURIComponent(name.value)}`)
-}
 </script>
 
 <template>
-  <div>
-    <div i-carbon-campsite inline-block text-4xl />
-    <p>
-      <a rel="noreferrer" href="https://github.com/antfu/vitesse-lite" target="_blank">
-        Vitesse Lite Testing
-      </a>
-    </p>
-    <p>
-      <em text-sm op75>Opinionated Vite Starter Template</em>
-    </p>
+  <v-app-bar>
+    <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-    <div py-4 />
+    <v-toolbar-title>{{ navTitle }}</v-toolbar-title>
 
-    <TheInput
-      v-model="name"
-      placeholder="What's your name?"
-      autocomplete="false"
-      @keydown.enter="go"
-    />
+    <v-spacer></v-spacer>
 
-    <div>
-      <button
-        class="m-3 text-sm btn"
-        :disabled="!name"
-        @click="go"
-      >
-        Go
-      </button>
-    </div>
-  </div>
+    <v-btn
+        :title="('newConversation')"
+        icon="add"
+        @click="createNewConversation"
+        class="d-md-none ma-3"
+    ></v-btn>
+    <v-btn
+        variant="outlined"
+        class="text-none d-none d-md-block"
+        @click="createNewConversation"
+    >
+      {{ ('newConversation') }}
+    </v-btn>
+
+  </v-app-bar>
+
+  <v-main>
+    <Welcome v-if="!route.params.id && conversation.messages.length === 0" />
+    <Conversation :conversation="conversation" />
+  </v-main>
 </template>
