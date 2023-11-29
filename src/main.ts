@@ -7,16 +7,8 @@ import './styles/main.css'
 import 'uno.css'
 import { createI18n } from 'vue-i18n'
 import messages from '@intlify/unplugin-vue-i18n/messages'
+import vuetify from './plugins/vuetify'
 
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
-
-const vuetify = createVuetify({
-  components,
-  directives,
-})
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

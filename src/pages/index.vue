@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { getDefaultConversationData } from "~/utils/helper";
+import { useTheme } from 'vuetify'
 
+const theme = useTheme()
 const route = useRoute();
 const router = useRouter();
 const conversation = ref(getDefaultConversationData());
 
+function toggleTheme () {
+  theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
+}
 // const loadConversation = async () => {
 //   const { data, error } = await useAuthFetch('/api/chat/conversations/' + route.params.id)
 //   if (!error.value) {
@@ -60,7 +65,7 @@ onActivated(async () => {
 <template>
     <v-app-bar :elevation="2" rounded>
       <v-toolbar-title class="text-green-darken-3 font-weight-bold">gkk Chatbot</v-toolbar-title>
-      <v-btn @click="toggleDark" icon="mdi-brightness-4"></v-btn>
+      <v-btn @click="toggleTheme" icon="mdi-brightness-4"></v-btn>
     </v-app-bar>
 
     <v-main>
