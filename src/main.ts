@@ -17,7 +17,7 @@ const router = createRouter({
 
 const i18n = createI18n({
   legacy: false,
-  locale: 'en',
+  locale: 'de',
   messages
 });
 

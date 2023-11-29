@@ -10,6 +10,7 @@ declare module 'vue' {
     ApiKeyDialog: typeof import('./src/components/ApiKeyDialog.vue')['default']
     Conversation: typeof import('./src/components/Conversation.vue')['default']
     DocumentsManage: typeof import('./src/components/DocumentsManage.vue')['default']
+    Footer: typeof import('./src/components/Footer.vue')['default']
     MessageActions: typeof import('./src/components/MessageActions.vue')['default']
     ModelDialog: typeof import('./src/components/ModelDialog.vue')['default']
     'ModelParameters.client': typeof import('./src/components/ModelParameters.client.vue')['default']
