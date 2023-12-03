@@ -1,67 +1,64 @@
-<script setup>
+<script setup lang="ts">
+import {EventStreamContentType, fetchEventSource} from '@microsoft/fetch-event-source'
+import { useMessageStore } from '~/store/messageStore.js';
+import { Message } from '~/types/Message';
+
+
+const store = useMessageStore()
+const defaultSystemMessage = 'You are a helpful assistant.'
 const fetchingResponse = ref(false)
-const messageQueue = []
+const messageQueue:Message[] = []
 const typeWriter = true
 let isProcessingQueue = false
 
-const props = defineProps({
-  conversation: {
-    type: Object,
-    required: true
+const createNewConversation = () => {
+  console.log('createNewConversation')
+  store.addMessage({TimeStamp:'30.12.1988', Body: defaultSystemMessage, MessageType:'system'})
+}
+
+
+onMounted(async () => {
+    createNewConversation();
   }
-})
+)
 
 const processMessageQueue = () => {
   if (isProcessingQueue || messageQueue.length === 0) {
     return
   }
-  if (!props.conversation.messages[props.conversation.messages.length - 1].is_bot) {
-    props.conversation.messages.push({id: null, is_bot: true, message: ''})
+  if (store.messages[store.messages.length - 1].MessageType === 'assistant') {
+    store.messages.push({TimeStamp: 'Test', Body: 'Body Test', MessageType: 'arst?'})
   }
   isProcessingQueue = true
   const nextMessage = messageQueue.shift()
   if (typeWriter) {
     let wordIndex = 0;
     const intervalId = setInterval(() => {
-      props.conversation.messages[props.conversation.messages.length - 1].message += nextMessage[wordIndex]
+      store.addMessage(nextMessage!)
+      store.messages[store.messages.length - 1].Body += nextMessage?.Body[wordIndex]
       wordIndex++
-      if (wordIndex === nextMessage.length) {
+      if (wordIndex === nextMessage?.Body?.length) {
         clearInterval(intervalId)
         isProcessingQueue = false
         processMessageQueue()
       }
     }, 50)
   } else {
-    props.conversation.messages[props.conversation.messages.length - 1].message += nextMessage
+    store.addMessage(nextMessage!)
     isProcessingQueue = false
     processMessageQueue()
   }
 }
 
-let ctrl
+let ctrl:AbortController
 const abortFetch = () => {
   if (ctrl) {
     ctrl.abort()
   }
   fetchingResponse.value = false
 }
-const fetchReply = async (message) => {
-  ctrl = new AbortController()
 
-  let msg = message
-  if (Array.isArray(message)) {
-    msg = message[message.length - 1]
-  } else {
-    message = [message]
-  }
-
-  const data = Object.assign({}, currentModel.value, {
-    openaiApiKey: $settings.open_api_key_setting === 'True' ? openaiApiKey.value : null,
-    message: message,
-    conversationId: props.conversation.id,
-    frugalMode: frugalMode.value
-  }, webSearchParams)
-
+const fetchReply = async (message:Message[]) => {
   try {
     await fetchEventSource('/api/conversation/', {
       signal: ctrl.signal,
@@ -70,7 +67,7 @@ const fetchReply = async (message) => {
         'accept': 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify(message),
       openWhenHidden: true,
       onopen(response) {
         if (response.ok && response.headers.get('content-type') === EventStreamContentType) {
@@ -128,7 +125,7 @@ const fetchReply = async (message) => {
   }
 }
 
-const grab = ref(null)
+const grab = ref<null | HTMLDivElement>(null)
 const scrollChatWindow = () => {
   if (grab.value === null) {
     return;
@@ -136,7 +133,7 @@ const scrollChatWindow = () => {
   grab.value.scrollIntoView({behavior: 'smooth'})
 }
 
-const send = (message) => {
+const send = (message:Message[]) => {
   fetchingResponse.value = true
   if (props.conversation.messages.length === 0) {
     addConversation(props.conversation)
@@ -149,35 +146,22 @@ const send = (message) => {
   fetchReply(message)
   scrollChatWindow()
 }
-const stop = () => {
-  abortFetch()
-}
 
 const snackbar = ref(false)
 const snackbarText = ref('')
-const showSnackbar = (text) => {
+const showSnackbar = (text:string) => {
   snackbarText.value = text
   snackbar.value = true
 }
 
 const editor = ref(null)
-const usePrompt = (prompt) => {
-  editor.value.usePrompt(prompt)
-}
 
-const deleteMessage = (index) => {
-  props.conversation.messages.splice(index, 1)
-}
-
-const toggleMessage = (index) => {
-  props.conversation.messages[index].is_disabled = !props.conversation.messages[index].is_disabled
-}
 </script>
 
 <template>
-  <div v-if="conversation">
+  <div v-if="store.messages.length > 0">
     <div
-        v-if="conversation.loadingMessages"
+        v-if="isProcessingQueue"
         class="text-center"
     >
       <v-progress-circular
@@ -187,36 +171,32 @@ const toggleMessage = (index) => {
     </div>
     <div v-else>
       <div
-          v-if="conversation.messages"
+          v-if="store.messages"
           ref="chatWindow"
       >
         <v-container>
           <v-row>
             <v-col
-                v-for="(message, index) in conversation.messages" :key="index"
+                v-for="(message, index) in store.messages" :key="index"
                 cols="12"
             >
               <div
                   class="d-flex align-center"
-                  :class="message.is_bot ? 'justify-start' : 'justify-end'"
+                  :class="message.MessageType === 'assistant' ? 'justify-start' : 'justify-end'"
               >
                 <MessageActions
-                    v-if="!message.is_bot"
+                    v-if="message.MessageType === 'user'"
                     :message="message"
                     :message-index="index"
-                    :use-prompt="usePrompt"
-                    :toggle-message="toggleMessage"
                 />
                 <MsgContent
                   :message="message"
                   :index="index"
-                  :use-prompt="usePrompt"
                 />
                 <MessageActions
-                    v-if="message.is_bot"
+                    v-if="message.MessageType === 'assistant'"
                     :message="message"
                     :message-index="index"
-                    :use-prompt="usePrompt"
                 />
               </div>
             </v-col>
@@ -234,16 +214,9 @@ const toggleMessage = (index) => {
         icon="close"
         title="stop"
         class="mr-3"
-        @click="stop"
       ></v-btn>
       <MsgEditor ref="editor" :send-message="send" :disabled="fetchingResponse" :loading="fetchingResponse" />
     </div>
-    <!--      <v-toolbar-->
-    <!--        density="comfortable"-->
-    <!--        color="transparent"-->
-    <!--      >-->
-    <!--        <Prompt v-show="!fetchingResponse" :use-prompt="usePrompt" />-->
-    <!--      </v-toolbar>-->
   </div>
 
   <v-snackbar
