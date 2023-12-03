@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 const props = defineProps({
   sendMessage: {
-    type: Function,
+    type: Function as PropType<(message: Message) => void>,
     required: true
   },
   disabled: {
@@ -36,13 +36,6 @@ watchEffect(() => {
   }
 })
 
-const toolSelector = ref({
-  list: [
-    { title: "Chat", icon: "add", name: "chat", type: 0 },
-  ],
-  selected: 0,
-})
-
 const send = () => {
   let msg = message.value
   // remove the last "\n"
@@ -50,15 +43,13 @@ const send = () => {
     msg = msg.slice(0, -1)
   }
   if (msg.length > 0) {
-    let item = toolSelector.value.list[toolSelector.value.selected]
-    props.sendMessage({content: msg, tool: item.name, message_type: item.type})
+    props.sendMessage({TimeStamp: Date.now().toString(), Body: msg, MessageType: 'user'})
   }
   message.value = ""
-  toolSelector.value.selected = 0
 }
 
 const textArea = ref()
-const usePrompt = (prompt) => {
+const usePrompt = (prompt:string) => {
   message.value = prompt
   textArea.value.focus()
 }
@@ -67,18 +58,10 @@ const clickSendBtn = () => {
   send()
 }
 
-const enterOnly = (event) => {
+const enterOnly = (event:any) => {
   event.preventDefault();
   send()
 }
-
-defineExpose({
-  usePrompt
-})
-
-const docDialogCtl = ref({
-  dialog: false,
-})
 </script>
 
 <template>
@@ -103,15 +86,10 @@ const docDialogCtl = ref({
     ></v-textarea>
     <v-btn
         :disabled="loading"
-        icon="send"
+        icon="mdi-send"
         title="Send"
         class="ml-3"
         @click="clickSendBtn"
     ></v-btn>
   </div>
-  <DocumentsManage
-    :send-message="sendMessage"
-    :control="docDialogCtl"
-    ref="documentMan"
-  />
 </template>

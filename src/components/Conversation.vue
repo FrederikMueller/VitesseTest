@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import {EventStreamContentType, fetchEventSource} from '@microsoft/fetch-event-source'
 import { useMessageStore } from '~/store/messageStore.js';
-import { Message } from '~/types/Message';
 
 
 const store = useMessageStore()
@@ -13,7 +12,9 @@ let isProcessingQueue = false
 
 const createNewConversation = () => {
   console.log('createNewConversation')
-  store.addMessage({TimeStamp:'30.12.1988', Body: defaultSystemMessage, MessageType:'system'})
+  store.addMessage({TimeStamp:Date.now().toString(), Body: defaultSystemMessage, MessageType:'system'})
+  store.addMessage({TimeStamp:Date.now().toString(), Body: "in TypeScript is typically used to declare global variables and types that may not be explicitly defined in your project but are expected to be available at runtime. It's a way to inform the TypeScript compiler about certain global entities that exist in your codebase but may not have type definitions.In general, shims in TypeScript are declarations that provide type information for entities that are not part of the TypeScript standard library or are not explicitly defined in your project. They help bridge the gap between the TypeScript type system and external JavaScript libraries or runtime environments.", MessageType:'assistant'})
+  store.addMessage({TimeStamp:Date.now().toString(), Body: 'Lets get cracking!', MessageType:'user'})
 }
 
 
@@ -133,17 +134,10 @@ const scrollChatWindow = () => {
   grab.value.scrollIntoView({behavior: 'smooth'})
 }
 
-const send = (message:Message[]) => {
+const send = (message:Message) => {
   fetchingResponse.value = true
-  if (props.conversation.messages.length === 0) {
-    addConversation(props.conversation)
-  }
-  if (Array.isArray(message)) {
-    props.conversation.messages.push(...message.map(i => ({message: i.content, message_type: i.message_type})))
-  } else {
-    props.conversation.messages.push({ message: message.content, message_type: message.message_type })
-  }
-  fetchReply(message)
+  store.addMessage(message)
+  fetchReply(store.messages)
   scrollChatWindow()
 }
 

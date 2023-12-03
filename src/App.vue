@@ -21,6 +21,7 @@ function toggleTheme () {
       <v-btn @click="toggleTheme" icon="mdi-brightness-4"></v-btn>
     </v-app-bar>
     <v-layout class="rounded rounded-md">
+      <!--      Consider adding left panel for system message-->
       <v-main class="d-flex align-center justify-center" style="min-height: 1200px;">
         <MainScreen></MainScreen>
       </v-main>

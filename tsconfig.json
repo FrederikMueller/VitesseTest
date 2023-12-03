@@ -7,7 +7,8 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "*": ["types/global.d.ts"]
     },
     "types": [
       "vite/client",

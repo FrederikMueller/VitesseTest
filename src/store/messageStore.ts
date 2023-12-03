@@ -1,8 +1,8 @@
 ﻿import { defineStore } from 'pinia'
-import { Message } from '~/types/Message';
 
 export const useMessageStore = defineStore('messages', () => {
   const messages = ref([] as Message[]);
+  const conversationStarted = computed(() => messages.value.length > 1);
   const addMessage = (message: Message) => {
     messages.value.push(message)
   };
@@ -12,6 +12,7 @@ export const useMessageStore = defineStore('messages', () => {
 
   return {
     messages,
+    conversationStarted,
     addMessage,
     clearMessages
   }
