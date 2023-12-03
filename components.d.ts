@@ -7,17 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    ApiKeyDialog: typeof import('./src/components/ApiKeyDialog.vue')['default']
     Conversation: typeof import('./src/components/Conversation.vue')['default']
-    DocumentsManage: typeof import('./src/components/DocumentsManage.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     MessageActions: typeof import('./src/components/MessageActions.vue')['default']
-    ModelDialog: typeof import('./src/components/ModelDialog.vue')['default']
-    'ModelParameters.client': typeof import('./src/components/ModelParameters.client.vue')['default']
     MsgContent: typeof import('./src/components/MsgContent.vue')['default']
     MsgEditor: typeof import('./src/components/MsgEditor.vue')['default']
-    NavigationDrawer: typeof import('./src/components/NavigationDrawer.vue')['default']
-    Prompt: typeof import('./src/components/Prompt.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Welcome: typeof import('./src/components/Welcome.vue')['default']
