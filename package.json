@@ -7,25 +7,29 @@
     "dev": "vite --port 3333 --open",
     "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit",
-    "preview": "vite preview",
-    "up": "taze major -I",
-    "postinstall": "npx simple-git-hooks"
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@intlify/unplugin-vue-i18n": "^1.5.0",
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "@types/markdown-it": "^13.0.7",
     "@vueuse/core": "^10.5.0",
     "copy-to-clipboard": "^3.3.3",
     "highlight.js": "^11.9.0",
     "markdown-it": "^13.0.2",
     "markdown-it-mathjax3": "^4.3.2",
     "nanoid": "^4.0.2",
+    "pinia": "^2.1.7",
     "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.3.7",
+    "vue-i18n": "^9.8.0",
     "vue-router": "^4.2.5",
     "vuetify": "^3.3.23"
   },
   "devDependencies": {
     "@antfu/eslint-config": "1.0.0-beta.29",
     "@iconify-json/carbon": "^1.1.21",
+    "@mdi/font": "^7.3.67",
     "@types/node": "^20.8.9",
     "@unocss/eslint-config": "^0.56.5",
     "@unocss/eslint-plugin": "^0.56.5",

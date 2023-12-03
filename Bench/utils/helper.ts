@@ -16,7 +16,7 @@ export const getConversations = async () => {
     return []
 }
 
-export const addConversation = (conversation) => {
+export const addConversation = (conversation:string[]) => {
     const conversations = useConversations()
     conversations.value = [conversation, ...conversations.value]
 }

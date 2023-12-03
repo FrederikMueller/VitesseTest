@@ -1,9 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import hljs from "highlight.js"
 import MarkdownIt from 'markdown-it'
 import copy from 'copy-to-clipboard'
 import mathjax3 from 'markdown-it-mathjax3'
-
 
 const md = new MarkdownIt({
   linkify: true,
@@ -16,29 +15,20 @@ md.use(mathjax3)
 
 const props = defineProps({
   message: {
-    type: Object,
+    type: Object as PropType<Message>,
     required: true
   },
   index: {
     type: Number,
     required: true,
-  },
-  usePrompt: {
-    type: Function,
-    required: true
-  },
-  deleteMessage: {
-    type: Function,
-    required: true
   }
 })
 
 const contentHtml = ref('')
-
-const contentElm = ref(null)
+const contentElm = ref<null|HTMLDivElement>(null)
 
 watchEffect(async () => {
-  contentHtml.value = props.message.message ? md.render(props.message.message) : ''
+  contentHtml.value = props.message.Body ? md.render(props.message.Body) : ''
   await nextTick()
   bindCopyCodeToButtons()
 })
@@ -47,7 +37,7 @@ const bindCopyCodeToButtons = () => {
   if (!contentElm.value) {
     return
   }
-  contentElm.value.querySelectorAll('.hljs-code-container').forEach((codeContainer) => {
+  contentElm.value.querySelectorAll('.hljs-code-container').forEach((codeContainer:any) => {
     const copyButton = codeContainer.querySelector('.hljs-copy-button');
     const codeBody = codeContainer.querySelector('code');
     copyButton.onclick = function () {
@@ -72,17 +62,16 @@ onMounted(() => {
 
 <template>
   <v-card
-      :color="message.is_bot ? '' : 'primary'"
+      :color="message.MessageType === 'assistant' ? '' : 'primary'"
       rounded="lg"
       elevation="2"
-      :class="{card_disabled: message.is_disabled}"
   >
     <div
         ref="contentElm"
         v-html="contentHtml"
         class="chat-msg-content pa-3"
     ></div>
-    <v-divider :color='message.is_bot? "rgb(var(--v-theme-on-background))" : "rgb(var(--v-theme-on-primary))"'></v-divider>
+    <v-divider :color="message.MessageType === 'assistant' ? 'rgb(var(--v-theme-on-background))' : 'rgb(var(--v-theme-on-primary))'"></v-divider>
   </v-card>
 </template>
 

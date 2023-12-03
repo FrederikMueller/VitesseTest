@@ -16,7 +16,6 @@
   "Please enter your password":"Please enter your password",
   "Password must be at least 8 characters":"Password must be at least 8 characters",
   "Please confirm your password":"Please confirm your password",
-  "welcomeTo": "Welcome to",
   "language": "Language",
   "setApiKey": "Set API Key",
   "setOpenAIApiKey": "Set OpenAI API Key",
@@ -78,25 +77,25 @@
     "web_search": "Search keywords",
     "arxiv": "ArXiv code"
   },
+  "welcomeTo": "Willkommen beim",
   "welcomeScreen": {
-    "introduction1": "is an unofficial client for ChatGPT, but uses the official OpenAI API.",
-    "introduction2": "You will need an OpenAI API Key before you can use this client.",
+    "introduction1": "ist der offizielle Chatbot der gkk den ihr bei eurer Arbeit benutzen könnt.",
     "examples": {
-      "title": "Examples",
-      "item1": "\"Explain quantum computing in simple terms\"",
-      "item2": "\"Got any creative ideas for a 10 year old’s birthday?\"",
-      "item3": "\"How do I make an HTTP request in Javascript?\""
+      "title": "Anwendungsmöglichkeiten",
+      "item1": "Kopiere wichtige Supportanfragen der Kundens hinein und lass den Chatbot die Antwort generieren!",
+      "item2": "Verpasse deine Meetings und lass dir die Transkripte zusammenfassen.",
+      "item3": "Emailanfragen der Kollegen können ganz einfach vom Chatbot beantwortet werden. Unnötiges Getippe wird gespart!"
     },
     "capabilities": {
-      "title": "Capabilities",
-      "item1": "Remembers what user said earlier in the conversation",
-      "item2": "Allows user to provide follow-up corrections",
-      "item3": "Trained to decline inappropriate requests"
+      "title": "Besonderheiten",
+      "item1": "Nutzt unseren eigenen Zugang zu OpenAI der Datenschutzkonform ist.",
+      "item2": "Die Daten werden nicht gespeichert und sind nur für euch sichtbar. Die Daten werden nicht an Dritte weitergegeben.",
+      "item3": "Nutzt das GPT-3.5 Modell von OpenAI. Deutsch sowie Englisch sind möglich."
     },
     "limitations": {
-      "title": "Limitations",
-      "item1": "May occasionally generate incorrect information",
-      "item2": "May occasionally produce harmful instructions or biased content",
+      "title": "Einschränkungen",
+      "item1": "Wie auch beim generellen Einsatz von KI ist die Qualität der Antworten nicht immer perfekt.",
+      "item2": "Verlasst euch nicht zu sehr auf die Antworten des Chatbots. Es ist nur ein Hilfsmittel.",
       "item3": "Limited knowledge of world and events after 2021"
     }
   }
