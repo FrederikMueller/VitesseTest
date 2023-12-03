@@ -1,5 +1,7 @@
 <script setup>
+import { useI18n } from 'vue-i18n'
 
+const { t } = useI18n()
 const props = defineProps({
   sendMessage: {
     type: Function,
@@ -20,7 +22,7 @@ const rows = ref(1)
 const autoGrow = ref(true)
 
 const hint = computed(() => {
-  return isMobile() ? '' : $i18n.t('pressEnterToSendYourMessageOrShiftEnterToAddANewLine')
+  return t('pressEnterToSendYourMessageOrShiftEnterToAddANewLine')
 })
 
 watchEffect(() => {
@@ -32,6 +34,13 @@ watchEffect(() => {
     rows.value = 1
     autoGrow.value = true
   }
+})
+
+const toolSelector = ref({
+  list: [
+    { title: "Chat", icon: "add", name: "chat", type: 0 },
+  ],
+  selected: 0,
 })
 
 const send = () => {
@@ -49,14 +58,9 @@ const send = () => {
 }
 
 const textArea = ref()
-const documentMan = ref(null)
-
 const usePrompt = (prompt) => {
   message.value = prompt
   textArea.value.focus()
-}
-const refreshDocList = () => {
-  documentMan.value.loadDocs()
 }
 
 const clickSendBtn = () => {
@@ -65,38 +69,13 @@ const clickSendBtn = () => {
 
 const enterOnly = (event) => {
   event.preventDefault();
-  if (!isMobile()) {
-    send()
-  }
+  send()
 }
 
 defineExpose({
-  usePrompt, refreshDocList
+  usePrompt
 })
 
-const toolSelector = ref({
-  list: [
-    { title: "Chat", icon: "add", name: "chat", type: 0 },
-    { title: "Web Search", icon: "travel_explore", name: "web_search", type: 100 },
-    { title: "ArXiv", icon: "local_library", name: "arxiv", type: 110 },
-  ],
-  selected: 0,
-})
-function getToolIcon() {
-  let v = toolSelector.value
-  let icon = v.list[v.selected].icon
-  return icon
-}
-function getLabel() {
-  let v = toolSelector.value
-  let name = v.list[v.selected].name
-  return "messageLabel." + name
-}
-function selectTool(idx) {
-  let v = toolSelector.value
-  v.selected = idx
-  let name = v.list[idx].name
-}
 const docDialogCtl = ref({
   dialog: false,
 })
@@ -106,40 +85,10 @@ const docDialogCtl = ref({
   <div
       class="flex-grow-1 d-flex align-center justify-space-between"
   >
-    <v-btn
-      title="Tools"
-      :icon="getToolIcon()"
-      density="compact"
-      size="default"
-      class="mr-3"
-      id="tools_btn"
-    >
-    </v-btn>
-    <v-menu
-      activator="#tools_btn"
-      open-on-hover
-    >
-      <v-list density="compact">
-        <v-list-item
-          v-for="(item, index) in toolSelector.list"
-          :key="index"
-          :prepend-icon="item.icon"
-          @click="selectTool(index)"
-        >
-          <v-list-item-title>{{ item.title }}</v-list-item-title>
-        </v-list-item>
-        <v-list-item
-          prepend-icon="article"
-          @click="docDialogCtl.dialog = true"
-        >
-          Documents
-        </v-list-item>
-      </v-list>
-    </v-menu>
     <v-textarea
         ref="textArea"
         v-model="message"
-        :label="$t(getLabel())"
+        :label="$t('messageLabel.chat')"
         :placeholder="hint"
         :rows="rows"
         max-rows="8"

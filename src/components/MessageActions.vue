@@ -14,10 +14,6 @@ const props = defineProps({
     type: Function,
     required: true
   },
-  deleteMessage: {
-    type: Function,
-    required: true
-  },
   toggleMessage: {
     type: Function,
     required: true
@@ -36,21 +32,6 @@ const copyMessage = () => {
   showSnackbar('Copied!')
 }
 
-const editMessage = () => {
-  props.usePrompt(props.message.message)
-}
-
-const deleteMessage = async () => {
-  const { data, error } = await useAuthFetch(`/api/chat/messages/${props.message.id}/`, {
-    method: 'DELETE'
-  })
-  if (!error.value) {
-    props.deleteMessage(props.messageIndex)
-    showSnackbar('Deleted!')
-  }
-  showSnackbar('Delete failed')
-}
-
 const toggle_message = async() => {
   const msg = Object.assign({}, props.message)
   msg.is_disabled = !msg.is_disabled
@@ -63,6 +44,7 @@ const toggle_message = async() => {
   }
 }
 
+// TODO: Fix Icons
 function selectMessageIcon(message) {
   if (message.is_bot) return ""
   if (message.message_type == 100) {
@@ -71,7 +53,7 @@ function selectMessageIcon(message) {
     return "local_library"
   } else if (message.message_type == 120) {
     return "article"
-  } 
+  }
   return ""
 }
 
@@ -117,18 +99,6 @@ const message_icon = selectMessageIcon(props.message)
           @click="copyMessage()"
           :title="$t('copy')"
           prepend-icon="content_copy"
-      >
-      </v-list-item>
-      <v-list-item
-          @click="editMessage()"
-          :title="$t('edit')"
-          prepend-icon="edit"
-      >
-      </v-list-item>
-      <v-list-item
-          @click="deleteMessage()"
-          :title="$t('delete')"
-          prepend-icon="delete"
       >
       </v-list-item>
     </v-list>

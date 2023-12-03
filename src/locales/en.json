@@ -74,9 +74,7 @@
   "settingDraw": "Settings",
   "importConversation": "Import Conversation",
   "messageLabel": {
-    "chat": "Write a message",
-    "web_search": "Search keywords",
-    "arxiv": "ArXiv code"
+    "chat": "Write a message"
   },
   "welcomeScreen": {
     "introduction1": "is an unofficial client for ChatGPT, but uses the official OpenAI API.",

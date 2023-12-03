@@ -1,10 +1,7 @@
 <script setup>
-const runtimeConfig = useRuntimeConfig()
-const currentModel = useCurrentModel()
-const openaiApiKey = useApiKey()
 const fetchingResponse = ref(false)
 const messageQueue = []
-const frugalMode = ref(true)
+const typeWriter = true
 let isProcessingQueue = false
 
 const props = defineProps({
@@ -23,7 +20,7 @@ const processMessageQueue = () => {
   }
   isProcessingQueue = true
   const nextMessage = messageQueue.shift()
-  if (runtimeConfig.public.typewriter) {
+  if (typeWriter) {
     let wordIndex = 0;
     const intervalId = setInterval(() => {
       props.conversation.messages[props.conversation.messages.length - 1].message += nextMessage[wordIndex]
@@ -33,7 +30,7 @@ const processMessageQueue = () => {
         isProcessingQueue = false
         processMessageQueue()
       }
-    }, runtimeConfig.public.typewriterDelay)
+    }, 50)
   } else {
     props.conversation.messages[props.conversation.messages.length - 1].message += nextMessage
     isProcessingQueue = false
@@ -56,22 +53,6 @@ const fetchReply = async (message) => {
     msg = message[message.length - 1]
   } else {
     message = [message]
-  }
-
-  let webSearchParams = {}
-  if (enableWebSearch.value || msg.tool == 'web_search') {
-    webSearchParams['web_search'] = {
-      ua: navigator.userAgent,
-      default_prompt: $i18n.t('webSearchDefaultPrompt')
-    }
-  }
-
-  if (msg.tool == 'web_search') {
-    msg.tool_args = webSearchParams['web_search']
-    msg.type = 100
-  } else if (msg.tool == 'arxiv') {
-    msg.tool_args = null
-    msg.type = 110
   }
 
   const data = Object.assign({}, currentModel.value, {
@@ -191,14 +172,6 @@ const deleteMessage = (index) => {
 const toggleMessage = (index) => {
   props.conversation.messages[index].is_disabled = !props.conversation.messages[index].is_disabled
 }
-
-const enableWebSearch = ref(false)
-
-
-onNuxtReady(() => {
-  currentModel.value = getCurrentModel()
-})
-
 </script>
 
 <template>
@@ -232,21 +205,18 @@ onNuxtReady(() => {
                     :message="message"
                     :message-index="index"
                     :use-prompt="usePrompt"
-                    :delete-message="deleteMessage"
                     :toggle-message="toggleMessage"
                 />
                 <MsgContent
                   :message="message"
                   :index="index"
                   :use-prompt="usePrompt"
-                  :delete-message="deleteMessage"
                 />
                 <MessageActions
                     v-if="message.is_bot"
                     :message="message"
                     :message-index="index"
                     :use-prompt="usePrompt"
-                    :delete-message="deleteMessage"
                 />
               </div>
             </v-col>
@@ -257,77 +227,25 @@ onNuxtReady(() => {
       </div>
     </div>
   </div>
-
-
-  <v-footer
-      app
-      class="footer"
-  >
-    <div class="px-md-16 w-100 d-flex flex-column">
-      <div class="d-flex align-center">
-        <v-btn
-            v-show="fetchingResponse"
-            icon="close"
-            title="stop"
-            class="mr-3"
-            @click="stop"
-        ></v-btn>
-        <MsgEditor ref="editor" :send-message="send" :disabled="fetchingResponse" :loading="fetchingResponse" />
-      </div>
-      <v-toolbar
-          density="comfortable"
-          color="transparent"
-      >
-        <Prompt v-show="!fetchingResponse" :use-prompt="usePrompt" />
-        <v-switch
-            v-if="$settings.open_web_search === 'True'"
-            v-model="enableWebSearch"
-            inline
-            hide-details
-            color="primary"
-            :label="$t('webSearch')"
-        ></v-switch>
-        <v-spacer></v-spacer>
-        <div
-            v-if="$settings.open_frugal_mode_control === 'True'"
-            class="d-flex align-center"
-        >
-          <v-switch
-              v-model="frugalMode"
-              inline
-              hide-details
-              color="primary"
-              :label="$t('frugalMode')"
-          ></v-switch>
-          <v-dialog
-              transition="dialog-bottom-transition"
-              width="auto"
-          >
-            <template v-slot:activator="{ props }">
-              <v-icon
-                  color="grey"
-                  v-bind="props"
-                  icon="help_outline"
-                  class="ml-3"
-              ></v-icon>
-            </template>
-            <template v-slot:default="{ isActive }">
-              <v-card>
-                <v-toolbar
-                    color="primary"
-                    :title="$t('frugalMode')"
-                ></v-toolbar>
-                <v-card-text>
-                  {{ $t('frugalModeTip') }}
-                </v-card-text>
-              </v-card>
-            </template>
-          </v-dialog>
-        </div>
-
-      </v-toolbar>
+  <div class="px-md-16 w-100 d-flex flex-column">
+    <div class="d-flex align-center">
+      <v-btn
+        v-show="fetchingResponse"
+        icon="close"
+        title="stop"
+        class="mr-3"
+        @click="stop"
+      ></v-btn>
+      <MsgEditor ref="editor" :send-message="send" :disabled="fetchingResponse" :loading="fetchingResponse" />
     </div>
-  </v-footer>
+    <!--      <v-toolbar-->
+    <!--        density="comfortable"-->
+    <!--        color="transparent"-->
+    <!--      >-->
+    <!--        <Prompt v-show="!fetchingResponse" :use-prompt="usePrompt" />-->
+    <!--      </v-toolbar>-->
+  </div>
+
   <v-snackbar
       v-model="snackbar"
       multi-line

@@ -26,10 +26,6 @@ const props = defineProps({
   usePrompt: {
     type: Function,
     required: true
-  },
-  deleteMessage: {
-    type: Function,
-    required: true
   }
 })
 

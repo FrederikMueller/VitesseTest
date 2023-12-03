@@ -39,9 +39,8 @@
 
 <template>
     <v-main v-if="true">
-      <Welcome/>
-      <p>Message Box</p>
-      <p>Message Box</p>
-
+      <Welcome v-if="true"/>
+      <Conversation/>
+      <v-spacer></v-spacer>
     </v-main>
 </template>

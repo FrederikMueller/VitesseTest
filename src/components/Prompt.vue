@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, ref, onMounted} from 'vue'
+import { defineProps, ref } from 'vue'
 
 const endpoint = 'api/v1.0/chatbot'
 const menu = ref(false)
@@ -44,54 +44,14 @@ const editPrompt = (index) => {
   editingPrompt.value = Object.assign({}, prompts.value[index])
 }
 
-const updatePrompt = async (index) => {
-  editingPrompt.value.updating = true
-  const { data, error } = await useAuthFetch(`/api/chat/prompts/${editingPrompt.value.id}/`, {
-    method: 'PUT',
-    body: JSON.stringify({
-      title: editingPrompt.value.title,
-      prompt: editingPrompt.value.prompt
-    })
-  })
-  if (!error.value) {
-    prompts.value[index] = editingPrompt.value
-  }
-  editingPrompt.value.updating = false
-  editingPrompt.value = null
-}
-
 const cancelEditPrompt = () => {
   editingPrompt.value = null
-}
-
-const deletePrompt = async (index) => {
-  deletingPromptIndex.value = index
-  const { data, error } = await useAuthFetch(`/api/chat/prompts/${prompts.value[index].id}/`, {
-    method: 'DELETE'
-  })
-  deletingPromptIndex.value = null
-  if (!error.value) {
-    prompts.value.splice(index, 1)
-  }
-}
-
-const loadPrompts = async () => {
-  loadingPrompts.value = true
-  const { data, error } = await useAuthFetch('/api/chat/prompts/')
-  if (!error.value) {
-    prompts.value = data.value
-  }
-  loadingPrompts.value = false
 }
 
 const selectPrompt = (prompt:string) => {
   props.usePrompt(prompt.prompt)
   menu.value = false
 }
-
-onMounted(() => {
-  loadPrompts()
-});
 
 </script>
 
