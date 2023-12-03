@@ -205,7 +205,7 @@ const editor = ref(null)
     <div class="d-flex align-center">
       <v-btn
         v-show="fetchingResponse"
-        icon="close"
+        icon="mdi-close-thick"
         title="stop"
         class="mr-3"
       ></v-btn>

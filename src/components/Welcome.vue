@@ -21,7 +21,6 @@
             <v-row>
               <v-col>
                 <div class="d-flex flex-column align-center">
-                  <v-icon icon="sunny"></v-icon>
                   <h3 class="text-h6">{{ $t('welcomeScreen.examples.title') }}</h3>
                 </div>
               </v-col>
@@ -36,7 +35,6 @@
             <v-row>
               <v-col>
                 <div class="d-flex flex-column align-center">
-                  <v-icon icon="bolt"></v-icon>
                   <h3 class="text-h6">{{ $t('welcomeScreen.capabilities.title') }}</h3>
                 </div>
               </v-col>
@@ -51,7 +49,6 @@
             <v-row>
               <v-col>
                 <div class="d-flex flex-column align-center">
-                  <v-icon icon="warning_amber"></v-icon>
                   <h3 class="text-h6">{{ $t('welcomeScreen.limitations.title') }}</h3>
                 </div>
               </v-col>

@@ -24,14 +24,13 @@ const copyMessage = () => {
   showSnackbar('Copied!')
 }
 
-// TODO: Fix Icons
 function selectMessageIcon(message: Message) {
   if (message.MessageType == 'assistant') {
-    return "travel_explore"
+    return "mdi-robot"
   } else if (message.MessageType == 'system') {
-    return "local_library"
+    return "mdi-information"
   } else if (message.MessageType == 'user') {
-    return "article"
+    return "mdi-account"
   }
   return ""
 }
@@ -41,39 +40,19 @@ const message_icon = selectMessageIcon(props.message)
 </script>
 
 <template>
-  <v-menu>
-    <template v-slot:activator="{ props }">
-      <v-btn
-        v-bind="props"
-        v-if="message_icon"
-        variant="text"
-        class="ma-2"
-      >
-          <v-icon :icon="message_icon"></v-icon>
-      </v-btn>
-    </template>
-  </v-menu>
-  <v-menu
-  >
-    <template v-slot:activator="{ props }">
-      <v-btn
-          v-bind="props"
-          icon
-          variant="text"
-          class="mx-1 ma-2"
-      >
-        <v-icon icon="more_horiz"></v-icon>
-      </v-btn>
-    </template>
-    <v-list>
-      <v-list-item
-          @click="copyMessage()"
-          :title="$t('copy')"
-          prepend-icon="content_copy"
-      >
-      </v-list-item>
-    </v-list>
-  </v-menu>
+  <div class="d-inline-block">
+    <v-btn
+      :title="$t('messageType')"
+      variant="text"
+      :icon="message_icon"
+    />
+<!--    <v-btn-->
+<!--      @click="copyMessage()"-->
+<!--      :title="$t('copy')"-->
+<!--      variant="text"-->
+<!--      icon="mdi-content-copy"-->
+<!--    />-->
+  </div>
 
   <v-snackbar
       v-model="snackbar"

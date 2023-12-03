@@ -2,13 +2,11 @@
 import { useMessageStore } from "~/store/messageStore";
 
 const store = useMessageStore();
-
 </script>
 
 <template>
     <v-main v-if="true">
       <Welcome v-if="!store.conversationStarted"/>
       <Conversation/>
-      <v-spacer></v-spacer>
     </v-main>
 </template>
